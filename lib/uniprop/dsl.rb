@@ -1,6 +1,6 @@
-module UniProp
+module UniPropDSLMethods
   def prop_data
-    @@prop_data ||= PropData.new(
+    @@prop_data ||= UniProp::PropData.new(
       Pathname.new(__dir__) / "../resources/settings.rb",
       Pathname.new(__dir__) / "../resources/metadata.json"
     )
@@ -23,8 +23,12 @@ module UniProp
   def latest_version(update_metadata: false)
     version_names = prop_data.metadata.version_names(update_metadata: update_metadata, confirm: update_metadata)
     
-    version_names.sort_by { Version.name_to_weight(_1) }.last
+    version_names.sort_by { UniProp::Version.name_to_weight(_1) }.last
   end
+end
+
+module UniPropDSL
+  extend UniPropDSLMethods
 end
 
 class Module
@@ -37,15 +41,15 @@ class Module
       version_nums[1] ||= "0"
       version_nums[2] ||= "0"
       version_name = version_nums.join(".")
-      UniProp::prop_data.version_manager(version_name)
+      UniPropDSL::prop_data.version_manager(version_name)
     elsif const =~ /^V(\d+)_(\d+)_Update(\d+)$/
       # A_B_C -> A.B-UpdateC
       version_name = "#{$1}.#{$2}-Update#{$3}"
-      UniProp::prop_data.version_manager(version_name)
+      UniPropDSL::prop_data.version_manager(version_name)
     
     # UnicodeManager
     elsif const =~ /UNICODE/
-      UniProp::prop_data.unicode_manager
+      UniPropDSL::prop_data.unicode_manager
     else
       const_missing_orig(const, *args, &block)
     end

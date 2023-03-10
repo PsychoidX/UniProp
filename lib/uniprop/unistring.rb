@@ -10,7 +10,7 @@ module UniString
     def method_missing(method, *args, &block)
       property = method.to_s
       version = args[0] || latest_version
-      UniProp::version(version).values_of(property, codepoint)
+      UniPropDSL::version(version).values_of(property, codepoint)
     end
   end
 
@@ -18,7 +18,7 @@ module UniString
     # @param [String] version
     # @param [String] property
     def prop_value(version, property)
-      UniProp::version(version).values_of(property, ord)
+      UniPropDSL::version(version).values_of(property, ord)
     end
 
     def prop
