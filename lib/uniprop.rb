@@ -1,4 +1,8 @@
-# frozen_string_literal: true
+require 'set'
+require 'open-uri'
+require 'nokogiri'
+require 'json'
+require 'zip'
 
 require_relative "uniprop/version"
 require_relative "uniprop/inspects"
