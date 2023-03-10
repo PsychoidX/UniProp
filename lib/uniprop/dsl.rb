@@ -1,8 +1,8 @@
 module UniProp
   def prop_data
     @@prop_data ||= PropData.new(
-      Pathname.new(__dir__) / "resources/settings.rb",
-      Pathname.new(__dir__) / "resources/metadata.json"
+      Pathname.new(__dir__) / "../resources/settings.rb",
+      Pathname.new(__dir__) / "../resources/metadata.json"
     )
   end
 
